@@ -1,0 +1,71 @@
+Gourav Kumar
+Senior Software Engineer
+mahajangourav55@gmail.com 	+917889398400 	IN 	LinkedIn
+SUMMARY
+Motivated and detail-oriented Senior Software Engineer with over 6 years of experience designing and building
+scalable, high-performance web applications using React.js and Node.js. Adept at delivering user-focused solutions
+that enhance performance, improve user experience, and align with business goals. Experienced in Agile
+development environments with a strong focus on clean architecture, collaboration, and continuous improvement.
+EXPERIENCE
+Senior Software Engineer, Qburst
+•Developed and maintained React-based web applications using React Hooks, Context
+API, and Contentful CMS.
+•Planned, designed, and implemented key Contentful enhancements for new stay pages,
+ensuring a smooth rollout aligned with project objectives.
+10/2021 – Present
+Bangalore, India
+•Provided mentorship and code reviews to team members, improving consistency,
+maintainability, and overall delivery quality.
+•Designed and built an admin portal to trigger and monitor sync operations, improving
+operational flexibility and efficiency.
+•Optimized UI rendering and component logic, resulting in notable performance
+improvements and a smoother user experience.
+Software Engineer, Learning Matters Pvt Ltd
+•Designed and developed a user management web app for internal teams using React,
+Node.js, and Express.js.
+•Managed AWS EC2 deployments, configured NGINX, and implemented SSL security
+with Certbot.
+11/2020 – 10/2021
+Bangalore, India
+•Created reusable React components to standardize UI patterns, reducing future
+development time.
+•Automated the sales team’s quotation management workflow, reducing turnaround
+time by 30%.
+Software Engineer, Hirarky Solutions Pvt Ltd
+•Built responsive web and mobile applications using React, Node.js, HTML, CSS, and
+Express.js.
+•Developed a scalable logistics management solution capable of efficiently processing
+large data volumes.
+07/2019 – 11/2020
+Bangalore, India
+•Collaborated directly with clients to gather requirements, deliver tailored solutions,
+and ensure high customer satisfaction.
+SKILLS
+Programming Languages
+JavaScript (ES6+), TypeScript, Python
+Frontend
+React.js, Next.js, React Native, HTML5, CSS3, Bootstrap, Material UI
+Backend
+Node.js, Express.js, REST APIs
+Cloud & DevOps
+AWS (EC2, S3, Lambda), NGINX, CI/CD
+Databases
+MongoDB, PostgreSQL, MySQL, DynamoDB
+Version Control & Tools
+Git, GitHub, Jira, VS Code, Postman
+Development Practices
+Agile / Scrum, Component-Based Architecture, Performance Optimization
+
+-- 1 of 2 --
+
+CERTIFICATES
+JavaScript Algorithms and Data Structures Masterclass-Udemy
+GitHub Copilot - The Complete Guide-Udemy
+Next.js 15 & React - The Complete Guide-Udemy
+EDUCATION
+Bachelor of Technology in Computer Science Engineering,
+I. K. Gujral Punjab Technical University
+08/2015 – 06/2019
+
+-- 2 of 2 --
+

@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #f3f6fb;
+}
+
+.app {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 20px;
+}
+
+.messages {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(20, 20, 30, 0.06);
+}
+
+.bubble {
+  display: inline-block;
+  margin: 8px 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.user-bubble {
+  background: #daf3ff;
+  margin-left: auto;
+}
+
+.bot-bubble {
+  background: #f5f6fb;
+  margin-right: auto;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ef;
+}
+
+button {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 0;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dropzone {
+  padding: 14px;
+  border: 2px dashed #d7dde6;
+  border-radius: 12px;
+  background: #fcfdff;
+  text-align: center;
+  transition: border 0.3s;
+}
+
+.dropzone:hover {
+  border-color: #7c3aed;
+}
+
+.small {
+  font-size: 13px;
+  color: #666;
+}
+
+@media (max-width: 1024px) {
+  .chat-panel {
+    grid-template-columns: 1fr;
+  }
+}

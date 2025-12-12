@@ -4,7 +4,13 @@ import path from "path";
 
 // Read document text
 export function readDocument(filePath) {
-  const absPath = path.join(process.cwd(), filePath);
+  // If already absolute, use it directly; otherwise, resolve relative to project root
+  const absPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
+  
+  if (!fs.existsSync(absPath)) {
+    throw new Error(`File not found: ${absPath}`);
+  }
+
   return fs.readFileSync(absPath, "utf-8");
 }
 
