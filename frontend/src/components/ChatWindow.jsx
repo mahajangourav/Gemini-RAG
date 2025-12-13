@@ -21,20 +21,32 @@ export default function ChatWindow() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/query", { question: text });
-      const replyObj = res.data.reply;
-      const botText = replyObj?.answer ?? JSON.stringify(replyObj);
-      const sources = replyObj?.sources ?? [];
-      setMessages((prev) => [...prev, { sender: "bot", text: botText, sources }]);
+        const res = await axios.post("http://localhost:5000/query", {
+            question: text,
+        });
+        const { answer, sources } = res.data;
+        setMessages((prev) => [
+            ...prev,
+            {
+            sender: "bot",
+            text: answer,
+            sources: sources || [],
+            },
+        ]);
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "Error: " + (err?.response?.data?.error || err.message) },
-      ]);
+        setMessages((prev) => [
+            ...prev,
+            {
+            sender: "bot",
+            text: "Error: " + (err?.response?.data?.error || err.message),
+            },
+        ]);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   };
+
+  console.log("messages", messages);
 
   return (
     <div className="app max-w-5xl mx-auto p-6">
