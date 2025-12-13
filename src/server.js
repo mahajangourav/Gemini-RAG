@@ -97,13 +97,21 @@ app.get("/docs", async (req, res) => {
 app.post("/query", async (req, res) => {
   try {
     const { question } = req.body;
-    if (!question) return res.status(400).json({ reply: "Please provide a question." });
-
-    const result = await queryRAG(question);
-    res.json({ reply: result });
+    if (!question) {
+      return res.status(400).json({
+        error: "Please provide a question."
+      });
+    }
+    const { answer, sources } = await queryRAG(question);
+    res.json({
+      answer,
+      sources
+    });
   } catch (err) {
     console.error("Query error:", err);
-    res.status(500).json({ error: String(err) });
+    res.status(500).json({
+      error: "Failed to process query"
+    });
   }
 });
 
