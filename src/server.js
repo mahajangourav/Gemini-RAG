@@ -1,13 +1,8 @@
-// src/server.js
 import express from "express";
 import cors from "cors";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
-// import { createRequire } from "module";
-// const require = createRequire(import.meta.url);
-// const pdf = require("pdf-parse");
-import { PDFParse } from "pdf-parse";
 import { setupIndex, indexDocument, listDocs, queryRAG } from "./rag/ragService.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -15,8 +10,6 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
- // The main function is the root of the imported module
 
 const UPLOAD_DIR = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR);
@@ -31,59 +24,37 @@ await setupIndex();
 
 app.get("/", (_, res) => res.send("Gemini RAG server running"));
 
+// Index via body file path
 app.post("/index", async (req, res) => {
   try {
-    const filePath = req.body.file || "data/notes.txt";
+    const filePath = req.body.file;
     const result = await indexDocument(filePath);
-    return res.json(result);
+    res.json(result);
   } catch (err) {
     console.error("Index error:", err);
-    return res.status(500).json({ error: String(err) });
+    res.status(500).json({ error: String(err) });
   }
 });
 
+// Upload & index file
 app.post("/index/file", upload.single("file"), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+
+  const uploadedPath = req.file.path;
+
   try {
-    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-
-    const uploadedPath = req.file.path;
-    const ext = path.extname(req.file.originalname).toLowerCase();
-    const tmpTextPath = path.join(UPLOAD_DIR, `${req.file.filename}.txt`);
-
-    if (ext === ".txt") {
-      fs.copyFileSync(uploadedPath, tmpTextPath);
-    } else if (ext === ".pdf") {
-      const dataBuffer = fs.readFileSync(uploadedPath);
-      // const data = await pdf(dataBuffer);
-      // fs.writeFileSync(tmpTextPath, data.text, "utf-8");\
-      // ⭐️ FIX: Instantiate the PDFParse class
-      const parser = new PDFParse({ data: dataBuffer });
-      
-      // ⭐️ FIX: Call the getText method
-      const data = await parser.getText();
-      console.log("pdf data...............", data)
-
-      
-      fs.writeFileSync(tmpTextPath, data.text, "utf-8");
-      
-      // ⭐️ Recommended: Clean up
-      await parser.destroy();
-    } else {
-      return res.status(415).json({ error: "Unsupported file type. Supported: .txt, .pdf" });
-    }
-
-    const result = await indexDocument(tmpTextPath);
+    const result = await indexDocument(uploadedPath);
     res.json({ message: "File indexed successfully", detail: result });
   } catch (err) {
     console.error("Index-file error:", err);
     res.status(500).json({ error: String(err) });
   } finally {
-    // Clean up
-    fs.unlinkSync(uploadedPath);
-    if (fs.existsSync(tmpTextPath)) fs.unlinkSync(tmpTextPath);
+    // Optional: keep uploaded file or delete
+    if (fs.existsSync(uploadedPath)) fs.unlinkSync(uploadedPath);
   }
 });
 
+// List all docs
 app.get("/docs", async (req, res) => {
   try {
     const docs = await listDocs();
@@ -94,19 +65,17 @@ app.get("/docs", async (req, res) => {
   }
 });
 
+// Query endpoint
 app.post("/query", async (req, res) => {
   try {
-    const { question } = req.body;
+    const { question, allowedFiles } = req.body;
     if (!question) {
-      return res.status(400).json({
+      return res.status(400).json({ 
         error: "Please provide a question."
       });
     }
-    const { answer, sources } = await queryRAG(question);
-    res.json({
-      answer,
-      sources
-    });
+    const result = await queryRAG(question, 4, allowedFiles || []);
+    res.json(result);
   } catch (err) {
     console.error("Query error:", err);
     res.status(500).json({

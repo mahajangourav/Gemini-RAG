@@ -1,26 +1,38 @@
-// indexer.js
 import fs from "fs";
 import path from "path";
+import { PDFParse } from "pdf-parse";
 
-// Read document text
+// Read document text (for txt files)
 export function readDocument(filePath) {
-  // If already absolute, use it directly; otherwise, resolve relative to project root
-  const absPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
-  
+  const absPath = path.isAbsolute(filePath)
+    ? filePath
+    : path.join(process.cwd(), filePath);
+
   if (!fs.existsSync(absPath)) {
     throw new Error(`File not found: ${absPath}`);
   }
 
-  return fs.readFileSync(absPath, "utf-8");
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === ".txt") {
+    return fs.readFileSync(absPath, "utf-8");
+  }
+
+  throw new Error("readDocument only supports .txt; use readPdfByPage for PDFs");
 }
 
-// Correct chunking function
-export function chunkText(
-  text,
-  filePath,
-  chunkSize = 800,
-  overlap = 150
-) {
+// PDF page-aware reader
+export async function readPdfByPage(filePath) {
+  const buffer = fs.readFileSync(filePath);
+  const parser = new PDFParse({ data: buffer });
+  const data = await parser.getText();
+
+  // split by page (\f = page break)
+  const pages = data.text.split("\f").map(p => p.trim()).filter(p => p.length > 0);
+  return pages;
+}
+
+// Chunking function for any text
+export function chunkText(text, filePath, chunkSize = 800, overlap = 150, page = 0) {
   const chunks = [];
   const docId = path.basename(filePath);
 
@@ -29,15 +41,13 @@ export function chunkText(
 
   while (start < text.length) {
     const end = start + chunkSize;
-
     chunks.push({
       text: text.slice(start, end),
       chunkIndex: index++,
       docId,
-      page: 0, // keep for PDFs later
+      page,
+      type: "text"
     });
-
-    // move start forward with overlap
     start += chunkSize - overlap;
   }
 
