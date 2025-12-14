@@ -3,7 +3,7 @@ import cors from "cors";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
-import { setupIndex, indexDocument, listDocs, queryRAG } from "./rag/ragService.js";
+import { setupIndex, indexDocument, queryRAG } from "./rag/ragService.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -11,7 +11,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const UPLOAD_DIR = path.join(process.cwd(), "uploads");
+const __dirname = new URL('.', import.meta.url).pathname;
+const UPLOAD_DIR = path.join(__dirname, "..", "uploads");
+
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR);
 
 const storage = multer.diskStorage({
@@ -51,17 +53,6 @@ app.post("/index/file", upload.single("file"), async (req, res) => {
   } finally {
     // Optional: keep uploaded file or delete
     if (fs.existsSync(uploadedPath)) fs.unlinkSync(uploadedPath);
-  }
-});
-
-// List all docs
-app.get("/docs", async (req, res) => {
-  try {
-    const docs = await listDocs();
-    res.json(docs);
-  } catch (err) {
-    console.error("List docs error:", err);
-    res.status(500).json({ error: String(err) });
   }
 });
 

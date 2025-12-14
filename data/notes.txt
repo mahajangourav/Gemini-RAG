@@ -1,4 +1,0 @@
-Node.js uses an event-driven architecture. 
-Express.js is a minimal web framework for APIs.
-RAG improves answer accuracy using embeddings + retrieval.
-Gemini models support advanced reasoning.
