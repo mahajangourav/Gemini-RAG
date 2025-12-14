@@ -13,6 +13,8 @@ export default function FileUploader({ onIndexed }) {
     setProgress(0);
 
     const results = [];
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 
     for (let i = 0; i < acceptedFiles.length; i++) {
       const file = acceptedFiles[i];
@@ -20,7 +22,7 @@ export default function FileUploader({ onIndexed }) {
       form.append("file", file);
 
       try {
-        await axios.post("http://localhost:5000/index/file", form, {
+        await axios.post(`${API_BASE}/index/file`, form, {
           headers: { "Content-Type": "multipart/form-data" },
           onUploadProgress: (event) => {
             const percent = Math.round((event.loaded * 100) / event.total);

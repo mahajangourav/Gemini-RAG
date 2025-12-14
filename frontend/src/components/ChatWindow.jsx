@@ -22,12 +22,14 @@ export default function ChatWindow() {
     setQ("");
     setLoading(true);
 
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
     try {
       const allowedFiles = uploadedFiles.map(f => f.name).filter(Boolean);
       const payload = { question: text };
       if (allowedFiles.length > 0) payload.allowedFiles = allowedFiles;
 
-      const res = await axios.post("http://localhost:5000/query", payload);
+      const res = await axios.post(`${API_BASE}/query`, payload);
       const { answer, sources } = res.data;
 
       setMessages(prev => [
