@@ -1,93 +1,86 @@
-Gemini-RAG — Smart Document Q&A System (Production-Ready RAG)
-🚀 Project Goal
+# Gemini-RAG — Smart FAQ Bot (Retrieval-Augmented Generation)
 
-Build a production-ready Retrieval-Augmented Generation (RAG) system using Google Gemini + Vector Database, where users can upload documents and ask natural-language questions.
+## 🚀 Project Goal
 
-✅ Answers are strictly grounded in uploaded documents
-❌ No hallucinated or out-of-context responses
+Build a **Retrieval-Augmented Generation (RAG)** system using **Google Gemini + ChromaDB**, where users can upload documents and ask questions.
+The answers are **grounded in actual uploaded content**, minimizing hallucinations.
 
-This project mirrors real-world AI Engineer work in SaaS, support tools, and internal knowledge assistants.
+This aligns with **real-world AI Engineer skills** required in SaaS/Support products.
 
+---
 
-🎯 Key Features
+## 🎯 Key Features
 
-| Feature                             | Status |
-| ----------------------------------- | ------ |
-| Upload multiple PDF / TXT documents | ✅      |
-| Automatic chunking with overlap     | ✅      |
-| Generate embeddings using Gemini    | ✅      |
-| Store vectors in Pinecone           | ✅      |
-| Semantic similarity search          | ✅      |
-| Context-aware answers with sources  | ✅      |
-| Chat-style frontend UI              | ✅      |
-| Environment-based config (prod/dev) | ✅      |
-| Fully deployed (Frontend + Backend) | ✅      |
+| Feature                          | Status |
+| -------------------------------  | ------ |
+| Load multipledocuments (PDF/Text)| ✔      |
+| Chunk documents into segments    | ✔      |
+| Generate Embeddings (Gemini)     | ✔      |
+| Store vectors in ChromaDB        | ✔      |
+| Similarity Search on User Query  | ✔      |
+| Final grounded answer via LLM    | ✔      |
 
+---
 
-🧠 Why RAG?
+## 🧠 Why RAG?
 
 Large Language Models alone hallucinate because they don’t know your private data.
-
 Retrieval-Augmented Generation (RAG) solves this by:
 
-✔ Fetching relevant document context first
-✔ Injecting retrieved chunks into the LLM prompt
-✔ Producing grounded, explainable answers
-✔ Working with private & enterprise data
-✔ Scaling for support bots, internal search & AI copilots
+* Provides **up-to-date information**
+* Injecting **retrieved chunks into the LLM prompt**
+* Reduces **hallucinations**
+* Works with **private company data**
+* Scales for **enterprise search + AI support tools**
 
-If no relevant context is found →
-The system responds: “Not available in the document.”
-(Interviewers love this 🔥)
+---
 
+## 🏗 High-Level Architecture
 
-🏗 High-Level Architecture
-
-┌──────────────┐
-│    User      │
-│  (Frontend)  │
-└──────┬───────┘
-       │ Query
-       ▼
+```text
+┌───────────────┐
+│    Frontend   │
+│  (React/Vite) │
+└───────┬───────┘
+        │ REST API
+        ▼
+┌───────────────┐
+│   Backend     │
+│  (Express)    │
+└───────┬───────┘
+        │
+        ▼
 ┌────────────────────┐
-│  Backend (Node.js) │
-│  ───────────────── │
-│  1. Embed Query    │
-│  2. Vector Search  │
-│  3. Build Context  │
-└──────┬─────────────┘
-       │ Top-K Chunks
-       ▼
+│  RAG Pipeline      │
+│  - Chunking        │
+│  - Embeddings      │
+│  - Pinecone Search │
+└───────┬────────────┘
+        │
+        ▼
 ┌────────────────────┐
-│   Pinecone Vector  │
-│      Database      │
-└──────┬─────────────┘
-       │ Retrieved Context
-       ▼
-┌────────────────────┐
-│   Gemini LLM       │
-│ (Context + Prompt) │
-└──────┬─────────────┘
-       │ Answer + Sources
-       ▼
-┌────────────────────┐
-│    User Output     │
+│  Gemini LLM        │
+│  Context-Aware     │
+│  Answer Generation │
 └────────────────────┘
+```
 
-📂 Folder Structure
+---
+
+## 📂 Folder Structure
 
 ```text
 Gemini-RAG/
 ├── backend/
 │   ├── rag/
-│   │   ├── indexer.js
-│   │   ├── pineconeClient.js
-│   │   └── ragService.js
-│   ├── gemini.js
-│   ├── uploads/
-│   ├── server.js
-│   ├── .env
-│   ├── .env.sample
+│   │   ├── indexer.js        # Chunking + overlap strategy
+│   │   ├── pineconeClient.js # Pinecone config
+│   │   └── ragService.js     # Indexing & query logic
+│   ├── gemini.js             # Gemini API config
+│   ├── server.js             # Express server
+│   ├── uploads/              # Uploaded files
+│   ├── .env                  # Environment variables
+│   ├── .env.sample           # Sample env file
 │   └── package.json
 │
 ├── frontend/
@@ -98,79 +91,103 @@ Gemini-RAG/
 │   │   │   └── MessageBubble.jsx
 │   │   ├── App.jsx
 │   │   └── main.jsx
-│   ├── .env
+│   ├── .env                  
 │   ├── .env.sample
 │   └── package.json
 │
 └── README.md
+```
 
+---
 
+## 🧩 Tech Stack
 
+| Component       | Tool                     |
+| --------------- | -------------------------|
+| LLM             | Gemini                   |
+| Vector Database | Pinecone                 |
+| Backend         | Node.js + Express        |
+| Embeddings      | Gemini Embeddings        |
+| Frontend        | React + Vite             |
+| Language        | JavaScript (ES Modules)  |
+| Deployment      | Vercel (FE) + Render (BE)|
 
-🧩 Tech Stack
+---
 
-| Component  | Technology                |
-| ---------- | ------------------------- |
-| Frontend   | React + Vite              |
-| Backend    | Node.js + Express         |
-| LLM        | Google Gemini             |
-| Embeddings | Gemini Embeddings         |
-| Vector DB  | Pinecone                  |
-| RAG        | Custom implementation     |
-| Deployment | Vercel (FE) + Render (BE) |
+## 🧪 How It Works (RAG Flow)
 
+1. **User uploads PDF/Text files**.
+2. Files are **chunked** into small segments.
+3. **Gemini embeddings** generated per chunk.
+4. Chunks stored in **Pinecone vector database**.
+5. User submits **query**.
+6. Backend performs **similarity search** in vector DB.
+7. Top-K chunks passed to **Gemini LLM**.
+8. **Grounded answer** returned to user.
 
-🔐 Production Considerations
+> If no context is found → Responds: “**Not available in document.**”
 
-✔ Environment-based configs (.env)
-✔ API keys never exposed to frontend
-✔ Rate-limit ready architecture
-✔ Modular RAG pipeline (easy to extend)
+***Live demo is shared on request to manage LLM API usage.**
 
-Live demo is shared on request to manage LLM API usage.
+---
 
+## ⚙️ Setup & Run
 
-🧪 Testing Strategy
+### Backend
 
-✔ Ask known questions from uploaded docs
-✔ Verify retrieved chunks before generation
-✔ Validate answer relevance
-✔ Handle empty retrieval gracefully
-
-
-🛠 Setup & Run (Local)
-Backend
+```bash
 cd backend
 npm install
 npm start
+```
 
-Frontend
+### Frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
+```
 
-Create .env files:
+## Create .env files:
 
-backend
+### Backend
 
+```bash
 GEMINI_API_KEY=your_key
 PINECONE_API_KEY=your_key
 PINECONE_INDEX=your_index
+```
 
+### Frontend
 
-frontend
-
+```bash
 VITE_API_BASE_URL=http://localhost:5000
+```
+---
 
+## 📂 Commands
 
-📌 Portfolio Note
+* **Index Documents**
 
-This project is part of my transition from
-Senior MERN Engineer → AI / GenAI Engineer
+```bash
+node src/rag/indexer.js
+```
 
-Future improvements:
+* **Test Query**
 
-Authentication & multi-user support
-Metadata filtering
-Retrieval evaluation metrics
-Advanced chunking strategies
+```bash
+node src/rag/querier.js
+```
+
+---
+
+## 🔮 Future Improvements
+
+* Add **multi-user authentication**
+* Enhance **UI/UX** (loader, error handling)
+* Add **analytics for queries**
+* Extend to **AI Agents / Vision** integrations
+* Deploy with **monitoring & logging**
+
+---
