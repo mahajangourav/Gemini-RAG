@@ -57,12 +57,18 @@ export async function indexDocument(filePath) {
 export async function queryRAG(query, topK = 4, allowedFiles = []) {
   const queryEmbedding = await getEmbedding(query);
 
-  const result = await index.query({
+  const queryPayload = {
     vector: queryEmbedding,
     topK,
     includeMetadata: true,
-    filter: allowedFiles.length > 0 ? { source: { $in: allowedFiles } } : {}
-  });
+  };
+
+  if (allowedFiles.length > 0) {
+    queryPayload.filter = {
+      source: { $in: allowedFiles }
+    };
+  }
+  const result = await index.query(queryPayload);
 
   if (!result.matches || result.matches.length === 0) {
     return {
