@@ -74,9 +74,9 @@ The system responds: “Not available in the document.”
 │    User Output     │
 └────────────────────┘
 
-
 📂 Folder Structure
 
+```text
 Gemini-RAG/
 ├── backend/
 │   ├── rag/
@@ -102,7 +102,9 @@ Gemini-RAG/
 │   ├── .env.sample
 │   └── package.json
 │
-├── README.md
+└── README.md
+
+
 
 
 🧩 Tech Stack
