@@ -164,21 +164,6 @@ PINECONE_INDEX=your_index
 ```bash
 VITE_API_BASE_URL=http://localhost:5000
 ```
----
-
-## 📂 Commands
-
-* **Index Documents**
-
-```bash
-node src/rag/indexer.js
-```
-
-* **Test Query**
-
-```bash
-node src/rag/querier.js
-```
 
 ---
 
