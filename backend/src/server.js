@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import { setupIndex, indexDocument, queryRAG } from "./rag/ragService.js";
 import dotenv from "dotenv";
+import resumeJDRoutes from "./routes/resumeJD.routes.js";
 dotenv.config();
 
 const app = express();
@@ -25,6 +26,8 @@ const upload = multer({ storage });
 await setupIndex();
 
 app.get("/", (_, res) => res.send("Gemini RAG server running"));
+
+app.use("/api", resumeJDRoutes);
 
 // Index via body file path
 app.post("/index", async (req, res) => {
