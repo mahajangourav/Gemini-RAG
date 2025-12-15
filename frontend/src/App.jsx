@@ -1,5 +1,5 @@
-import ChatWindow from "./components/ChatWindow";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
-  return <ChatWindow />;
+  return <Dashboard />;
 }
